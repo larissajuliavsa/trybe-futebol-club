@@ -4,9 +4,7 @@ import LoginService from '../services/LoginServices';
 import LoginController from '../controllers/LoginController';
 import {
   emailMiddleware,
-  // emailIncorrect,
   passwordMiddleware,
-  // passwordIncorrect,
 } from '../middleware/throwMiddleware';
 
 const loginRouter = express.Router();
@@ -18,13 +16,10 @@ const entityFactory = () => {
   return controller;
 };
 
-loginRouter.post(
-  '/',
-  emailMiddleware,
-  // emailIncorrect,
-  passwordMiddleware,
-  // passwordIncorrect,
-  (req, res, next) => entityFactory().getLogin(req, res, next),
-);
+loginRouter.post('/', emailMiddleware, passwordMiddleware, (req, res, next) =>
+  entityFactory().getLogin(req, res, next));
+
+loginRouter.get('/validate', (req, res, next) =>
+  entityFactory().getToken(req, res, next));
 
 export default loginRouter;
