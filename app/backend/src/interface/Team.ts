@@ -5,4 +5,5 @@ export interface ITeam {
 
 export interface ITeamModel {
   getTeam(): Promise<ITeam[]>;
+  getTeamId(id:number): Promise<ITeam>;
 }

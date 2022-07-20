@@ -10,4 +10,9 @@ export default class TeamRepository implements ITeamModel {
     const data = await this.model.findAll();
     return data as ITeam[];
   }
+
+  public async getTeamId(id: number): Promise<ITeam> {
+    const dataId = await this.model.findByPk(id);
+    return dataId as ITeam;
+  }
 }
