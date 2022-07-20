@@ -15,4 +15,7 @@ const entityFactory = () => {
 teamRouter.get('/', (req, res) =>
   entityFactory().getTeam(req, res));
 
+teamRouter.get('/:id', (req, res) =>
+  entityFactory().getTeamId(req, res));
+
 export default teamRouter;
