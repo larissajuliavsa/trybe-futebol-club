@@ -14,6 +14,7 @@ export default class MatchController {
   public async matchInProgress(req: Request, res: Response) {
     const { body } = req;
     const inProgress = await this.service.matchInProgress(body);
+
     return res.status(201).json(inProgress);
   }
 }

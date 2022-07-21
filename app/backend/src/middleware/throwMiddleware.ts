@@ -1,15 +1,24 @@
+import * as jwt from 'jsonwebtoken';
 import { Request, Response, NextFunction, ErrorRequestHandler } from 'express';
+import User from '../database/models/User';
+// import Match from '../database/models/Match';
 import LoginRepository from '../repository/LoginRepository';
 import Bcrypt from '../utils/Bcrypt';
-import User from '../database/models/User';
+// import Team from '../database/models/Team';
+import TeamRepository from '../repository/TeamRepository';
 
-const repository = new LoginRepository();
+const Login = new LoginRepository();
+const Team = new TeamRepository();
 const bcrypt = new Bcrypt();
 
 const MSG_NULL = 'All fields must be filled';
 const MSG_INCORRECT = 'Incorrect email or password';
+const INVALID_TOKEN = 'Token must be a valid token';
+const SAME_TEAM = 'It is not possible to create a match with two equal teams';
+const NULL_TEAM = 'There is no team with such id!';
 const BAD_REQUEST = 400;
 const UNAUTHORIZED = 401;
+const NOT_FOUND = 404;
 
 export const throwMiddleware: ErrorRequestHandler = (
   err,
@@ -17,27 +26,83 @@ export const throwMiddleware: ErrorRequestHandler = (
   res: Response,
   _next: NextFunction,
 ) => {
-  if (err.status) return res.status(500).json({ message: 'Internal Server Error' });
+  if (err.status) {
+    return res.status(500).json({ message: 'Internal Server Error' });
+  }
 };
 
-export const emailMiddleware = async (req: Request, res: Response, next: NextFunction) => {
+export const emailMiddleware = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   const { email } = req.body;
   const findEmail = await User.findOne({ where: { email } });
 
-  if (!email || undefined) return res.status(BAD_REQUEST).json({ message: MSG_NULL });
-  if (!findEmail) return res.status(UNAUTHORIZED).json({ message: MSG_INCORRECT });
+  if (!email || undefined) {
+    return res.status(BAD_REQUEST).json({ message: MSG_NULL });
+  }
+  if (!findEmail) {
+    return res.status(UNAUTHORIZED).json({ message: MSG_INCORRECT });
+  }
 
   next();
 };
 
-export const passwordMiddleware = async (req: Request, res: Response, next: NextFunction) => {
+export const passwordMiddleware = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   const { email, password } = req.body;
 
-  const findPassword = await repository.getLogin(email); // findOne({ where: { email } });
+  const findPassword = await Login.getLogin(email); // findOne({ where: { email } });
   const crypt = bcrypt.compare(password, findPassword.password);
 
   if (!crypt) return res.status(UNAUTHORIZED).json({ message: MSG_INCORRECT });
-  if (!password || password.length <= 5) return res.status(BAD_REQUEST).json({ message: MSG_NULL });
+  if (!password || password.length <= 5) {
+    return res.status(BAD_REQUEST).json({ message: MSG_NULL });
+  }
 
+  next();
+};
+
+export const tokenMiddleware = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const auth = req.headers.authorization as string;
+    console.log(req.headers);
+    if (!auth) {
+      return res.status(UNAUTHORIZED).json({ message: INVALID_TOKEN }); // status: 401 msg: 'Token must be a valid token';
+    }
+
+    const secret = process.env.JWT_SECRET || 'jwt_secret';
+    const token = jwt.verify(auth as string, secret) as jwt.JwtPayload;
+    const findEmail = await Login.getLogin(token.data.dataValues.email);
+
+    if (!findEmail) {
+      return res.status(UNAUTHORIZED).json({ message: INVALID_TOKEN }); // status: 401 msg: 'Token must be a valid token';
+    }
+    next();
+  } catch (error) {
+    return res.status(UNAUTHORIZED).json({ message: INVALID_TOKEN });
+    // console.error(error);
+  }
+};
+
+export const matchesMiddleware = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  const { homeTeam, awayTeam } = req.body;
+  const findHomeTeam = await Team.getTeamId(homeTeam); // está buscando id de home
+  const findAwayTeam = await Team.getTeamId(awayTeam); // está buscando id de away
+
+  if (homeTeam === awayTeam) {
+    return res.status(401).json({ message: SAME_TEAM }); // msg: "It is not possible to create a match with two equal teams"
+  }
+  if (!findHomeTeam || !findAwayTeam) {
+    return res.status(NOT_FOUND).json({ message: NULL_TEAM }); // status: 404 msg: "There is no team with such id!"
+  }
   next();
 };

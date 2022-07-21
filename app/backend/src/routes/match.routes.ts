@@ -2,6 +2,7 @@ import * as express from 'express';
 import MatchRepository from '../repository/MatchRepository';
 import MatchService from '../services/MatchService';
 import MatchController from '../controllers/MatchController';
+import { tokenMiddleware, matchesMiddleware } from '../middleware/throwMiddleware';
 
 const matchRouter = express.Router();
 
@@ -15,7 +16,7 @@ const entityFactory = () => {
 matchRouter.get('/', (req, res) =>
   entityFactory().getMatch(req, res));
 
-matchRouter.post('/', (req, res) =>
+matchRouter.post('/', matchesMiddleware, tokenMiddleware, (req, res) =>
   entityFactory().matchInProgress(req, res));
 
 export default matchRouter;
