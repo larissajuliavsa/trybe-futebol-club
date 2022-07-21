@@ -9,4 +9,12 @@ export default class MatchService implements IMatchModel {
     const matches = await this.model.getMatch();
     return matches;
   }
+
+  public async matchInProgress(match:IMatch):Promise<IMatch> {
+    const { homeTeam, homeTeamGoals, awayTeam, awayTeamGoals } = match;
+    const scoreboard = { homeTeam, awayTeam, homeTeamGoals, awayTeamGoals, inProgress: true };
+
+    const inProgress = await this.model.matchInProgress(scoreboard);
+    return inProgress;
+  }
 }

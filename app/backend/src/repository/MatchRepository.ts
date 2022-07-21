@@ -24,4 +24,9 @@ export default class MatchRepository implements IMatchModel {
     });
     return matches;
   }
+
+  public async matchInProgress(match:IMatch):Promise<IMatch> {
+    const inProgress = await this.model.create(match);
+    return inProgress;
+  }
 }

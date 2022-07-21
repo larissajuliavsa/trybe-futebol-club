@@ -9,4 +9,5 @@ export interface IMatch {
 
 export interface IMatchModel {
   getMatch(): Promise<IMatch[]>;
+  matchInProgress(match:IMatch): Promise<IMatch>;
 }
