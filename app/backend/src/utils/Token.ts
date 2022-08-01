@@ -6,7 +6,7 @@ import 'dotenv/config';
 export default class Token {
   public getToken = (loginData:ILogin):string => {
     const jwtConfig:object = {
-      expiresIn: '12h',
+      expiresIn: '30d',
       algorithm: 'HS256',
     };
 

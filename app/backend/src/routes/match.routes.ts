@@ -16,7 +16,7 @@ const entityFactory = () => {
 matchRouter.get('/', (req, res) =>
   entityFactory().getMatch(req, res));
 
-matchRouter.post('/', matchesMiddleware, tokenMiddleware, (req, res) =>
+matchRouter.post('/', tokenMiddleware, matchesMiddleware, (req, res) =>
   entityFactory().matchInProgress(req, res));
 
 export default matchRouter;
