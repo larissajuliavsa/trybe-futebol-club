@@ -25,8 +25,12 @@ export default class MatchRepository implements IMatchModel {
     return matches;
   }
 
-  public async matchInProgress(match:IMatch):Promise<IMatch> {
+  public async matchStarted(match:IMatch):Promise<IMatch> {
     const inProgress = await this.model.create(match);
     return inProgress;
+  }
+
+  public async matchFinished(id:number):Promise<void> {
+    await this.model.update({ inProgress: false }, { where: { id } });
   }
 }

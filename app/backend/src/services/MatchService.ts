@@ -10,8 +10,13 @@ export default class MatchService implements IMatchModel {
     return matches;
   }
 
-  public async matchInProgress(match:IMatch):Promise<IMatch> {
-    const inProgress = await this.model.matchInProgress({ ...match, inProgress: true });
+  public async matchStarted(match:IMatch):Promise<IMatch> {
+    const inProgress = await this.model.matchStarted({ ...match, inProgress: true });
     return inProgress;
+  }
+
+  public async matchFinished(id:number):Promise<object> {
+    await this.model.matchFinished(id);
+    return { message: 'Finished' };
   }
 }

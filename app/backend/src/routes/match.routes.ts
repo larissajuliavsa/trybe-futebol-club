@@ -17,6 +17,9 @@ matchRouter.get('/', (req, res) =>
   entityFactory().getMatch(req, res));
 
 matchRouter.post('/', tokenMiddleware, matchesMiddleware, (req, res) =>
-  entityFactory().matchInProgress(req, res));
+  entityFactory().matchStarted(req, res));
+
+matchRouter.patch('/:id/finish', (req, res) =>
+  entityFactory().matchFinished(req, res));
 
 export default matchRouter;

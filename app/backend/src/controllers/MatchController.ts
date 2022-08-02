@@ -11,10 +11,17 @@ export default class MatchController {
     return res.status(200).json(matches);
   }
 
-  public async matchInProgress(req: Request, res: Response) {
+  public async matchStarted(req: Request, res: Response) {
     const { body } = req;
-    const inProgress = await this.service.matchInProgress(body);
+    const inProgress = await this.service.matchStarted(body);
 
     return res.status(201).json(inProgress);
+  }
+
+  public async matchFinished(req: Request, res: Response) {
+    const { id } = req.params;
+    const finished = await this.service.matchFinished(Number(id));
+
+    return res.status(200).json(finished);
   }
 }
