@@ -24,4 +24,14 @@ export default class MatchController {
 
     return res.status(200).json(finished);
   }
+
+  public async matchUpdated(req: Request, res: Response) {
+    const { id } = req.params;
+    const { body } = req;
+    console.log('log controller', body);
+
+    const updated = await this.service.matchUpdated(Number(id), body);
+
+    return res.status(200).json(updated);
+  }
 }
