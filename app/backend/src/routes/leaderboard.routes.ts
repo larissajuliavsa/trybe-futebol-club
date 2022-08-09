@@ -1,5 +1,5 @@
 import * as express from 'express';
-import MatchRepository from '../repository/MatchRepository';
+import MatchBoardRepository from '../repository/MatchBoardRepository';
 import TeamRepository from '../repository/TeamRepository';
 import LeaderboardService from '../services/LeaderBoardServices';
 import LeaderboardController from '../controllers/LeaderboardController';
@@ -7,7 +7,7 @@ import LeaderboardController from '../controllers/LeaderboardController';
 const leaderboardRouter = express.Router();
 
 const entityFactory = () => {
-  const matchRepository = new MatchRepository();
+  const matchRepository = new MatchBoardRepository();
   const teamRepository = new TeamRepository();
   const service = new LeaderboardService(matchRepository, teamRepository);
   const controller = new LeaderboardController(service);

@@ -6,7 +6,7 @@ export default class MatchService implements IMatchModel {
   }
 
   public async getMatch():Promise<IMatch[]> {
-    const matches = await this.model.getMatch(true);
+    const matches = await this.model.getMatch();
     return matches;
   }
 

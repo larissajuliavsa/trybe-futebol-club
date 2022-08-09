@@ -1,11 +1,11 @@
 import { scoreBoardHome, orderScoreBoard, scoreBoardAway } from '../utils/HomeLeaderboard';
 import { IHomeBoard, IHomeBoardModel } from '../interface/HomeBoard';
-import { IMatchModel } from '../interface/Match';
 import { ITeamModel } from '../interface/Team';
+import { IMatchBoardModel } from '../interface/MatchBoard';
 
 export default class LeaderboardService implements IHomeBoardModel {
   constructor(
-    private matchRepository: IMatchModel,
+    private matchRepository: IMatchBoardModel,
     private teamRepository: ITeamModel,
   ) {
     this.matchRepository = matchRepository;
