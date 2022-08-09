@@ -7,21 +7,23 @@ export default class MatchRepository implements IMatchModel {
     this.model = model;
   }
 
-  public async getMatch(): Promise<IMatch[]> {
-    const matches = await this.model.findAll({
-      include: [
-        {
-          model: Team,
-          as: 'teamHome',
-          attributes: { exclude: ['id'] },
-        },
-        {
-          model: Team,
-          as: 'teamAway',
-          attributes: { exclude: ['id'] },
-        },
-      ],
-    });
+  public async getMatch(inProgress: null | boolean): Promise<IMatch[]> {
+    let matches;
+    if (inProgress === null) {
+      matches = await this.model.findAll({
+        include: [
+          { model: Team, as: 'teamHome', attributes: { exclude: ['id'] } },
+          { model: Team, as: 'teamAway', attributes: { exclude: ['id'] } },
+        ],
+      });
+    } else {
+      matches = await this.model.findAll({ where: { inProgress },
+        include: [
+          { model: Team, as: 'teamHome', attributes: { exclude: ['id'] } },
+          { model: Team, as: 'teamAway', attributes: { exclude: ['id'] } },
+        ],
+      });
+    }
     return matches;
   }
 
