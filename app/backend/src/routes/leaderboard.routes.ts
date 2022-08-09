@@ -17,4 +17,7 @@ const entityFactory = () => {
 leaderboardRouter.get('/home', (req, res) =>
   entityFactory().getHomeBoard(req, res));
 
+leaderboardRouter.get('/away', (req, res) =>
+  entityFactory().getAwayBoard(req, res));
+
 export default leaderboardRouter;

@@ -1,24 +1,44 @@
-import { scoreBoard, orderScoreBoard } from '../utils/HomeLeaderboard';
+import { scoreBoardHome, orderScoreBoard, scoreBoardAway } from '../utils/HomeLeaderboard';
 import { IHomeBoard, IHomeBoardModel } from '../interface/HomeBoard';
 import { IMatchModel } from '../interface/Match';
 import { ITeamModel } from '../interface/Team';
 
 export default class LeaderboardService implements IHomeBoardModel {
-  constructor(private matchRepository: IMatchModel, private teamRepository: ITeamModel) {
+  constructor(
+    private matchRepository: IMatchModel,
+    private teamRepository: ITeamModel,
+  ) {
     this.matchRepository = matchRepository;
     this.teamRepository = teamRepository;
   }
 
-  public async getHomeBoard():Promise<IHomeBoard[]> {
+  public async getHomeBoard(): Promise<IHomeBoard[]> {
     const allMatches = await this.matchRepository.getMatch(false);
     const allTeams = await this.teamRepository.getTeam();
 
     const homeScoreboard = allTeams.map((eachTeam) => {
-      const matches = allMatches.filter((match) => match.homeTeam === eachTeam.id);
-      return scoreBoard(eachTeam, matches);
+      const matches = allMatches.filter(
+        (match) => match.homeTeam === eachTeam.id,
+      );
+      return scoreBoardHome(eachTeam, matches);
     });
 
     const order = orderScoreBoard(homeScoreboard);
+    return order;
+  }
+
+  public async getAwayBoard(): Promise<IHomeBoard[]> {
+    const allMatches = await this.matchRepository.getMatch(false);
+    const allTeams = await this.teamRepository.getTeam();
+
+    const awayScoreboard = allTeams.map((eachTeam) => {
+      const matches = allMatches.filter(
+        (match) => match.awayTeam === eachTeam.id,
+      );
+      return scoreBoardAway(eachTeam, matches);
+    });
+
+    const order = orderScoreBoard(awayScoreboard);
     return order;
   }
 }

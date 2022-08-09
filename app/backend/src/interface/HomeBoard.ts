@@ -13,4 +13,5 @@ export interface IHomeBoard {
 
 export interface IHomeBoardModel {
   getHomeBoard(): Promise<IHomeBoard[]>;
+  getAwayBoard(): Promise<IHomeBoard[]>;
 }
