@@ -15,4 +15,9 @@ export default class LeaderboardController {
     const data = await this.service.getAwayBoard();
     return res.status(200).json(data);
   }
+
+  public async getBoard(_req: Request, res: Response) {
+    const data = await this.service.getBoard();
+    return res.status(200).json(data);
+  }
 }

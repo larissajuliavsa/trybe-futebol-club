@@ -2,7 +2,7 @@ import { ITeam } from '../interface/Team';
 import { IMatch } from '../interface/Match';
 import { IHomeBoard } from '../interface/HomeBoard';
 
-const scorePointsHome = (matches:IMatch[]) => {
+const scorePointsHome = (matches: IMatch[]) => {
   let totalPoints = 0;
   matches.forEach((each) => {
     if (each.homeTeamGoals - each.awayTeamGoals > 0) totalPoints += 3; // somar pontos das vitórias
@@ -12,7 +12,7 @@ const scorePointsHome = (matches:IMatch[]) => {
   return totalPoints;
 };
 
-const scorePointsAway = (matches:IMatch[]) => {
+const scorePointsAway = (matches: IMatch[]) => {
   let totalPoints = 0;
   matches.forEach((each) => {
     if (each.awayTeamGoals - each.homeTeamGoals > 0) totalPoints += 3; // somar pontos das vitórias
@@ -22,7 +22,7 @@ const scorePointsAway = (matches:IMatch[]) => {
   return totalPoints;
 };
 
-const scoreVictoriesHome = (matches:IMatch[]) => {
+const scoreVictoriesHome = (matches: IMatch[]) => {
   let totalVictories = 0;
   matches.forEach((each) => {
     if (each.homeTeamGoals > each.awayTeamGoals) totalVictories += 1; // somar pontos das vitórias
@@ -31,7 +31,7 @@ const scoreVictoriesHome = (matches:IMatch[]) => {
   return totalVictories;
 };
 
-const scoreVictoriesAway = (matches:IMatch[]) => {
+const scoreVictoriesAway = (matches: IMatch[]) => {
   let totalVictories = 0;
   matches.forEach((each) => {
     if (each.awayTeamGoals > each.homeTeamGoals) totalVictories += 1; // somar pontos das vitórias
@@ -40,7 +40,7 @@ const scoreVictoriesAway = (matches:IMatch[]) => {
   return totalVictories;
 };
 
-const scoreDrawsHome = (matches:IMatch[]) => {
+const scoreDrawsHome = (matches: IMatch[]) => {
   let totalDraws = 0;
   matches.forEach((each) => {
     if (each.homeTeamGoals === each.awayTeamGoals) totalDraws += 1; // somar pontos dos empates
@@ -49,7 +49,7 @@ const scoreDrawsHome = (matches:IMatch[]) => {
   return totalDraws;
 };
 
-const scoreDrawsAway = (matches:IMatch[]) => {
+const scoreDrawsAway = (matches: IMatch[]) => {
   let totalDraws = 0;
   matches.forEach((each) => {
     if (each.awayTeamGoals === each.homeTeamGoals) totalDraws += 1; // somar pontos dos empates
@@ -58,7 +58,7 @@ const scoreDrawsAway = (matches:IMatch[]) => {
   return totalDraws;
 };
 
-const scoreLossesHome = (matches:IMatch[]) => {
+const scoreLossesHome = (matches: IMatch[]) => {
   let totalLosses = 0;
   matches.forEach((each) => {
     if (each.homeTeamGoals < each.awayTeamGoals) totalLosses += 1; // somar pontos das derrotas
@@ -67,7 +67,7 @@ const scoreLossesHome = (matches:IMatch[]) => {
   return totalLosses;
 };
 
-const scoreLossesAway = (matches:IMatch[]) => {
+const scoreLossesAway = (matches: IMatch[]) => {
   let totalLosses = 0;
   matches.forEach((each) => {
     if (each.awayTeamGoals < each.homeTeamGoals) totalLosses += 1; // somar pontos das derrotas
@@ -76,7 +76,7 @@ const scoreLossesAway = (matches:IMatch[]) => {
   return totalLosses;
 };
 
-const scoreFavorHome = (matches:IMatch[]) => {
+const scoreFavorHome = (matches: IMatch[]) => {
   let goalsFavor = 0;
   matches.forEach((each) => {
     goalsFavor += each.homeTeamGoals;
@@ -85,7 +85,7 @@ const scoreFavorHome = (matches:IMatch[]) => {
   return goalsFavor;
 };
 
-const scoreFavorAway = (matches:IMatch[]) => {
+const scoreFavorAway = (matches: IMatch[]) => {
   let goalsFavor = 0;
   matches.forEach((each) => {
     goalsFavor += each.awayTeamGoals;
@@ -94,7 +94,7 @@ const scoreFavorAway = (matches:IMatch[]) => {
   return goalsFavor;
 };
 
-const scoreOwnHome = (matches:IMatch[]) => {
+const scoreOwnHome = (matches: IMatch[]) => {
   let goalsOwn = 0;
   matches.forEach((each) => {
     goalsOwn += each.awayTeamGoals;
@@ -103,7 +103,7 @@ const scoreOwnHome = (matches:IMatch[]) => {
   return goalsOwn;
 };
 
-const scoreOwnAway = (matches:IMatch[]) => {
+const scoreOwnAway = (matches: IMatch[]) => {
   let goalsOwn = 0;
   matches.forEach((each) => {
     goalsOwn += each.homeTeamGoals;
@@ -112,26 +112,26 @@ const scoreOwnAway = (matches:IMatch[]) => {
   return goalsOwn;
 };
 
-const scoreBalanceHome = (matches:IMatch[]) => {
+const scoreBalanceHome = (matches: IMatch[]) => {
   const favor = scoreFavorHome(matches);
   const own = scoreOwnHome(matches);
   const goalsBalance = favor - own;
   return goalsBalance;
 };
 
-const scoreBalanceAway = (matches:IMatch[]) => {
+const scoreBalanceAway = (matches: IMatch[]) => {
   const favor = scoreFavorAway(matches);
   const own = scoreOwnAway(matches);
   const goalsBalance = favor - own;
   return goalsBalance;
 };
 
-const scoreEfficiency = (points:number, matches:number) => {
+const scoreEfficiency = (points: number, matches: number) => {
   const efficiency = Math.round((points * 10000) / (matches * 3)) / 100;
   return efficiency;
 };
 
-export const orderScoreBoard = (board:IHomeBoard[]) => {
+export const orderScoreBoard = (board: IHomeBoard[]) => {
   const order = board.sort((a, b) => {
     if (a.totalPoints > b.totalPoints) return -1;
     if (a.totalPoints < b.totalPoints) return 1;
@@ -148,7 +148,7 @@ export const orderScoreBoard = (board:IHomeBoard[]) => {
   return order;
 };
 
-export const scoreBoardHome = (each:ITeam, matches:IMatch[]) => {
+export const scoreBoardHome = (each: ITeam, matches: IMatch[]) => {
   const board = {
     name: each.teamName, // nome do time
     totalPoints: scorePointsHome(matches), // somando todos os pontos
@@ -165,7 +165,7 @@ export const scoreBoardHome = (each:ITeam, matches:IMatch[]) => {
   return board;
 };
 
-export const scoreBoardAway = (each:ITeam, matches:IMatch[]) => {
+export const scoreBoardAway = (each: ITeam, matches: IMatch[]) => {
   const board = {
     name: each.teamName, // nome do time
     totalPoints: scorePointsAway(matches), // somando todos os pontos
@@ -179,4 +179,25 @@ export const scoreBoardAway = (each:ITeam, matches:IMatch[]) => {
     efficiency: scoreEfficiency(scorePointsAway(matches), matches.length), // eficiência do time home
   };
   return board;
+};
+
+export const scoreBoard = (each: ITeam, home: IHomeBoard, away: IHomeBoard) => {
+  const createBoard = {
+    name: each.teamName,
+    totalPoints: home.totalPoints + away.totalPoints,
+    totalGames: home.totalGames + away.totalGames,
+    totalVictories: home.totalVictories + away.totalVictories,
+    totalDraws: home.totalDraws + away.totalDraws,
+    totalLosses: home.totalLosses + away.totalLosses,
+    goalsFavor: home.goalsFavor + away.goalsFavor,
+    goalsOwn: home.goalsOwn + away.goalsOwn,
+    goalsBalance: home.goalsBalance + away.goalsBalance,
+  };
+
+  const efficiency = Math.round(
+    (createBoard.totalPoints * 10000) / (createBoard.totalGames * 3),
+  ) / 100;
+
+  const finalBoard = { ...createBoard, efficiency };
+  return finalBoard;
 };

@@ -14,6 +14,9 @@ const entityFactory = () => {
   return controller;
 };
 
+leaderboardRouter.get('/', (req, res) =>
+  entityFactory().getBoard(req, res));
+
 leaderboardRouter.get('/home', (req, res) =>
   entityFactory().getHomeBoard(req, res));
 

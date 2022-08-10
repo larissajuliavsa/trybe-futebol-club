@@ -1,17 +1,18 @@
 export interface IHomeBoard {
   name: string | undefined,
-  totalPoints: string | number,
-  totalGames: string | number,
-  totalVictories: string | number,
-  totalDraws: string | number,
-  totalLosses: string | number,
-  goalsFavor: string | number,
-  goalsOwn: string | number,
-  goalsBalance: string | number,
-  efficiency: string | number,
+  totalPoints: number,
+  totalGames: number,
+  totalVictories: number,
+  totalDraws: number,
+  totalLosses: number,
+  goalsFavor: number,
+  goalsOwn: number,
+  goalsBalance: number,
+  efficiency: number,
 }
 
 export interface IHomeBoardModel {
   getHomeBoard(): Promise<IHomeBoard[]>;
   getAwayBoard(): Promise<IHomeBoard[]>;
+  getBoard(): Promise<IHomeBoard[]>;
 }
